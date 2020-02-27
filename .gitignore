@@ -4,3 +4,6 @@
 *.pbw
 *.ninja
 *.pbi
+*.out
+*.o
+*.dep
