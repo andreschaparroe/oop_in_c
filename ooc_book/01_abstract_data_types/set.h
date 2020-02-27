@@ -1,7 +1,8 @@
 #ifndef SET_H
 #define SET_H
 
-extern const void * Set;
+struct Set { unsigned count; };
+
 /**
   * takes an element, adds it to a set, and returns whatever was added or already present in the set
   */

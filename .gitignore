@@ -1,0 +1,6 @@
+*.ninja_log
+*.pbd
+*.browse
+*.pbw
+*.ninja
+*.pbi

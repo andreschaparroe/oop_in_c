@@ -10,67 +10,48 @@
 
 
 
-static int heap [MANY];
+
 
 void * new (const void * type, ...)
 {
-    int * p; /* & heap[1..] */
-
-    for(p = heap + 1; p < heap + MANY; ++ p)
-    {
-        if( ! *p )
-        {
-            break;
-        }
-    }
-    assert(p < heap + MANY);
-    * p = MANY;
-
+    const size_t size = *(const size_t *) type;
+    void *p = calloc(1,size);
+    assert(p);
     return p;
 }
 
 void delete (void * _item)
 {
-    int * item = _item;
-
-    if(item)
-    {
-        assert(item > heap && item < heap + MANY);
-        *item = 0;
-    }
-
+    free(_item);
 }
 
 void * add (void * _set, const void * _element)
 {
-    int * set = _set;
 
-    const int * element = _element;
+    struct Set * set = _set;
+    struct Object * element = (void *) _element;
 
-    assert(set > heap && set < heap + MANY);
-    assert(*set == MANY);
-    assert(element > heap && element < heap + MANY);
+    assert(set);
+    assert(element);
 
-    if(* element == MANY)
-        * (int *) element = set - heap;
+    if(! element->in)
+        element->in = set;
     else
-        assert(* element == set - heap);
+        assert(element->in == set);
 
-    return (void * ) element;
+    ++element->count, ++set->count;
+
+    return element;
 
 }
 
 void * find(const void * _set, const void * _element)
 {
-    const int * set = _set;
-    const int * element = _element;
+    const struct Object * element = _element;
+    assert(_set);
+    assert(element);
 
-    assert( set > heap && set < heap + MANY);
-    assert( * set == MANY);
-    assert(element > heap && element < heap + MANY);
-    assert(* element);
-
-    return * element == set - heap ? (void *) element : 0;
+    return element->in == _set? (void*) element : 0;
 }
 
 int contains (const void * _set, const void * _element)
@@ -80,13 +61,29 @@ int contains (const void * _set, const void * _element)
 
 void * drop (void * _set, const void * _element)
 {
-    int * element = find(_set, _element);
+
+    struct Set * set = _set;
+    struct Object * element = find(set, _element);
 
     if(element)
-        * element = MANY;
+    {
+        if(--element->count == 0)
+        {
+            element->in = 0;
+        }
+        --set->count;
+    }
     return element;
 }
 
+unsigned count (const void * _set)
+{
+    const struct Set * set = _set;
+
+    assert(set);
+
+    return set->count;
+}
 
 int differ (const void * a, const void * b)
 {

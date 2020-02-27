@@ -1,7 +1,7 @@
 #ifndef OBJECT_H
 #define OBJECT_H
 
-extern const void * Object; /* new(Object) */
+struct Object {unsigned count; struct Set * in; };
 
 /**
   * Can compare objects: it returns true if they are not equal and false if they are
