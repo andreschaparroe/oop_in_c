@@ -12,6 +12,9 @@ int main(void)
 
     printf("sizeOf(a) == %u\n", sizeOf(a));
 
+    if(differ(a,b))
+        puts("ok");
+
     if(differ(a, aa))
         puts("differ?");
 
