@@ -3,5 +3,8 @@
     <project>
         <path>$WS_DIR$\01_abstract_data_types\01_abstract_data_types.ewp</path>
     </project>
+    <project>
+        <path>$WS_DIR$\02_dynamic_linkage\02_dynamic_linkage.ewp</path>
+    </project>
     <batchBuild />
 </workspace>
